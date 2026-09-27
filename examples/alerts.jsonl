@@ -1,0 +1,4 @@
+{"timestamp":"2026-09-27T01:14:03Z","rule":"Repeated Login Failure","severity":"medium","summary":"12 failed logins for admin","entities":["user:admin","ip:203.0.113.8"]}
+{"timestamp":"2026-09-27T01:16:44Z","rule":"Successful Login After Failures","severity":"high","summary":"admin authenticated from the same source","entities":["user:admin","ip:203.0.113.8","host:web-01"]}
+{"timestamp":"2026-09-27T01:19:08Z","rule":"Rare Child Process","severity":"high","summary":"web service started an unusual shell child","entities":["host:web-01","process:web-service"]}
+{"timestamp":"2026-09-27T03:22:00Z","rule":"DNS Volume Spike","severity":"low","summary":"resolver traffic exceeded daily baseline","entities":["host:dns-02"]}
