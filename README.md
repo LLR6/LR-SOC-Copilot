@@ -12,7 +12,7 @@
 <!-- LR-LAB-CHROME:END -->
 
 <!-- LR-SECOND-PASS:START -->
-<p align="center"><a href="#5-分钟-demo">5-minute demo</a> · <a href="./runbooks">Runbooks</a> · <a href="./src">Source</a> · <a href="./tests">Tests</a></p>
+<p align="center"><a href="#5-分钟-demo">5-minute demo</a> · <a href="./runbooks">Runbooks</a> · <a href="./docs/EVIDENCE_MODEL.md">Evidence model</a> · <a href="./src">Source</a> · <a href="./tests">Tests</a></p>
 <!-- LR-SECOND-PASS:END -->
 
 
