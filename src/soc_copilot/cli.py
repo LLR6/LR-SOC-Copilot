@@ -57,19 +57,25 @@ def retrieve(query,docs,k=3):
   scored.append((dot/den if den else 0,d))
  return [{"ref":d["ref"],"score":round(s,4),"excerpt":d["text"][:420]} for s,d in sorted(scored,key=lambda x:-x[0])[:k] if s>0]
 
-def serialize_case(case,docs):
+def evidence_coverage(evidence):
+ if not evidence:return {"complete":0,"total":0,"ratio":0.0}
+ complete=sum(bool(x.get("source") and x.get("timestamp") and x.get("rule") and x.get("entities")) for x in evidence)
+ return {"complete":complete,"total":len(evidence),"ratio":round(complete/len(evidence),4)}
+
+def serialize_case(case,docs,top_k=3):
  evidence=[]
  for i,a in enumerate(case["alerts"],1):
   evidence.append({"id":f"E{i}","source":a["_ref"],"timestamp":a["_time"].isoformat().replace("+00:00","Z"),"rule":a.get("rule","unknown"),"severity":a["severity"],"summary":a.get("summary",""),"entities":a["entities"]})
  query=" ".join(x["rule"]+" "+x["summary"]+" ".join(x["entities"]) for x in evidence)
- return {k:v for k,v in case.items() if k!="alerts"}|{"evidence":evidence,"runbooks":retrieve(query,docs)}
+ return {k:v for k,v in case.items() if k!="alerts"}|{"evidence":evidence,"evidence_coverage":evidence_coverage(evidence),"runbooks":retrieve(query,docs,top_k)}
 
 def markdown(cases):
  rows=["# LR SOC Copilot · Investigation Brief","",f"Cases: {len(cases)}","","> Every claim below points to source evidence. Scores are triage heuristics, not incident verdicts.",""]
  for c in cases:
   rows += [f"## {c['id']} · score {c['score']}","",f"时间：`{c['start']}` → `{c['end']}`",f"实体：{', '.join(f'`{x}`' for x in c['entities'])}","","### Evidence",""]
   for e in c["evidence"]:rows.append(f"- **[{e['id']}]** `{e['timestamp']}` · {e['severity'].upper()} · {e['rule']} · {e['summary']} (`{e['source']}`)")
-  rows += ["","### Suggested runbooks",""]
+  coverage=c.get("evidence_coverage",{})
+  rows += ["",f"Evidence coverage: **{coverage.get('complete',0)}/{coverage.get('total',0)}** ({coverage.get('ratio',0):.0%})","","### Suggested runbooks",""]
   rows += [f"- `{x['ref']}` · similarity {x['score']} · {x['excerpt'].splitlines()[0]}" for x in c["runbooks"]] or ["- No matching local runbook."]
   rows += ["","### Investigator checklist","","- [ ] Validate the earliest evidence against the source system.","- [ ] Confirm whether the shared entities belong to one activity.","- [ ] Record benign explanations and contradictory evidence.",""]
  return "\n".join(rows)
@@ -77,8 +83,14 @@ def markdown(cases):
 def main(argv=None):
  p=argparse.ArgumentParser(description="Correlate alerts and retrieve evidence-grounded local runbooks")
  p.add_argument("alerts",type=Path);p.add_argument("--runbooks",type=Path,default=Path("runbooks"));p.add_argument("--window",type=int,default=900);p.add_argument("--format",choices=("markdown","json"),default="markdown");p.add_argument("--output",type=Path)
+ p.add_argument("--top-runbooks",type=int,default=3,help="maximum local runbook chunks per case")
+ p.add_argument("--min-score",type=int,default=0,help="only emit cases at or above this triage score")
  a=p.parse_args(argv)
- try:result=[serialize_case(x,chunks(a.runbooks)) for x in correlate(load_alerts(a.alerts),a.window)]
+ if a.top_runbooks<0:p.error("--top-runbooks must be >= 0")
+ if not 0<=a.min_score<=100:p.error("--min-score must be between 0 and 100")
+ try:
+  docs=chunks(a.runbooks)
+  result=[serialize_case(x,docs,a.top_runbooks) for x in correlate(load_alerts(a.alerts),a.window) if x["score"]>=a.min_score]
  except (ValueError,OSError) as e:p.error(str(e))
  text=json.dumps({"schema":"lr-soc-copilot/v1","cases":result},ensure_ascii=False,indent=2)+"\n" if a.format=="json" else markdown(result)+"\n"
  a.output.write_text(text,encoding="utf-8") if a.output else print(text,end="");return 0
