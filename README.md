@@ -13,7 +13,7 @@
 
 <!-- LR-PROJECT-DOCS:START -->
 ### Project docs
-[Architecture](./docs/ARCHITECTURE.md) · [Benchmarks](./docs/BENCHMARKS.md) · [Evidence model](./docs/EVIDENCE_MODEL.md) · [Threat model](./docs/THREAT_MODEL.md) · [Roadmap](./docs/ROADMAP.md) · [Releasing](./docs/RELEASING.md)
+[Architecture](./docs/ARCHITECTURE.md) · [Benchmarks](./docs/BENCHMARKS.md) · [Evidence model](./docs/EVIDENCE_MODEL.md) · [Threat model](./docs/THREAT_MODEL.md) · [Roadmap](./docs/ROADMAP.md) · [Compatibility](./docs/COMPATIBILITY.md) · [Releasing](./docs/RELEASING.md) · [Support](./SUPPORT.md)
 <!-- LR-PROJECT-DOCS:END -->
 <p align="center">[Threat model](docs/THREAT_MODEL.md)</p>
 
