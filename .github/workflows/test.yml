@@ -59,6 +59,14 @@ jobs:
           fi
       - name: Evaluate runbook retrieval
         run: python scripts/evaluate_retrieval.py benchmarks/retrieval.json --output retrieval-benchmark.json --fail-on-regression
+      - name: Performance smoke
+        run: python scripts/perf_smoke.py examples/alerts.jsonl --runbooks runbooks --repeats 5 --output performance-smoke.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: soc-copilot-performance-smoke-${{ matrix.python-version || 'default' }}
+          path: performance-smoke.json
+
       - name: Hash retrieval benchmark
         run: sha256sum retrieval-benchmark.json > retrieval-benchmark.json.sha256
       - name: Smoke-test built wheel
