@@ -99,6 +99,13 @@ Case 现在会保留 `correlation_edges`，每条边记录：
 仓库还新增 `benchmarks/retrieval.json`，用固定查询检查 5 类本地 Runbook 的 Top-1 检索结果。CI 会运行检索 benchmark 并保存 JSON artifact，避免新增文档后把已有检索行为悄悄冲乱。
 <!-- LR-DEEP-CONTENT:END -->
 
+<!-- LR-ENGINEERING-REF:START -->
+## Engineering Reference
+
+[Architecture](docs/ARCHITECTURE.md) · [Evidence model](docs/EVIDENCE_MODEL.md) · [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md) · [Release checklist](docs/RELEASE_CHECKLIST.md) · [Case schema](schemas/case-report.schema.json)
+
+These files document the project's architecture, safety boundaries, reproducibility assumptions and release process.
+<!-- LR-ENGINEERING-REF:END -->
 
 <!-- LR-LAB-FOOTER:START -->
 ---
