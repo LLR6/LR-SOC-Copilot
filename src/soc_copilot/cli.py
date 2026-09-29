@@ -2,6 +2,14 @@ import argparse,json,math,re,sys
 from collections import Counter
 from datetime import datetime,timezone
 from pathlib import Path
+from importlib.metadata import PackageNotFoundError, version
+
+def package_version():
+    try:
+        return version("lr-soc-copilot")
+    except PackageNotFoundError:
+        return "dev"
+
 
 SEV={"info":1,"low":2,"medium":4,"high":7,"critical":10}
 WORD=re.compile(r"[a-zA-Z][a-zA-Z0-9_-]{2,}|[\u4e00-\u9fff]{2,}")
@@ -92,6 +100,7 @@ def markdown(cases):
 
 def main(argv=None):
  p=argparse.ArgumentParser(description="Correlate alerts and retrieve evidence-grounded local runbooks")
+ p.add_argument("--version",action="version",version=f"%(prog)s {package_version()}")
  p.add_argument("alerts",type=Path);p.add_argument("--runbooks",type=Path,default=Path("runbooks"));p.add_argument("--window",type=int,default=900);p.add_argument("--format",choices=("markdown","json"),default="markdown");p.add_argument("--output",type=Path)
  p.add_argument("--top-runbooks",type=int,default=3,help="maximum local runbook chunks per case")
  p.add_argument("--min-score",type=int,default=0,help="only emit cases at or above this triage score")
