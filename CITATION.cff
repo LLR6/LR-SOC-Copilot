@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this software in research, teaching, or a technical report, please cite it using the metadata below."
+title: "LR-SOC-Copilot"
+type: software
+authors:
+  - family-names: "LLR6"
+version: "0.2.0"
+date-released: 2026-09-29
+repository-code: "https://github.com/LLR6/LR-SOC-Copilot"
+url: "https://github.com/LLR6/LR-SOC-Copilot"
+abstract: >-
+  Evidence-grounded alert correlation and local runbook retrieval for reproducible SOC investigation.
+license: MIT
