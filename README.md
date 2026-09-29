@@ -57,6 +57,34 @@ soc-copilot examples/alerts.jsonl --runbooks runbooks --format json --output cas
 
 作者：LLR6 · MIT License
 
+<!-- LR-CONTENT-UPGRADE:START -->
+## v0.2：让“有证据”也可以被检查
+
+Case 现在会输出 `evidence_coverage`，统计证据是否同时具备：
+
+- source line
+- timestamp
+- rule
+- entities
+
+Coverage 只衡量**可回查完整性**，不等于事件真实性概率。
+
+CLI 同时新增：
+
+```bash
+soc-copilot examples/alerts.jsonl \
+  --runbooks runbooks \
+  --top-runbooks 2 \
+  --min-score 40 \
+  --output brief.md
+```
+
+`--top-runbooks` 控制每个 Case 最多返回多少本地知识片段；`--min-score` 用于缩小分诊列表，但不会把分数包装成“是否入侵”的结论。
+
+证据模型见 [docs/EVIDENCE_MODEL.md](docs/EVIDENCE_MODEL.md)。
+
+<!-- LR-CONTENT-UPGRADE:END -->
+
 <!-- LR-LAB-FOOTER:START -->
 ---
 <p align="center"><sub>Part of <a href="https://github.com/LLR6">LR Lab</a> · Security × AI × Android × Automation</sub><br><sub>Build things that are useful, inspectable, and reproducible.</sub></p>
