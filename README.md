@@ -11,6 +11,11 @@
 <p align="center"><a href="https://github.com/LLR6">Profile</a> · <a href="https://github.com/LLR6?tab=repositories">All projects</a> · <a href="https://github.com/LLR6/LR-SOC-Copilot/issues">Issues</a></p>
 <!-- LR-LAB-CHROME:END -->
 
+<!-- LR-SECOND-PASS:START -->
+<p align="center"><a href="#5-分钟-demo">5-minute demo</a> · <a href="./runbooks">Runbooks</a> · <a href="./src">Source</a> · <a href="./tests">Tests</a></p>
+<!-- LR-SECOND-PASS:END -->
+
+
 
 <p align="center"><img src="./docs/media/social-preview.svg" alt="LR-SOC-Copilot" width="100%"></p>
 <p align="center"><img src="./docs/media/demo.gif" alt="LR-SOC-Copilot reproducible demo" width="100%"></p>
