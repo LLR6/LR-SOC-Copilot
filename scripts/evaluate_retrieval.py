@@ -23,7 +23,8 @@ def main() -> int:
     for case in data.get("cases", []):
         hits = retrieve(case["query"], docs, 1)
         top = hits[0]["ref"] if hits else None
-        ok = bool(top and top.startswith(case["expected_file"] + "#"))
+        expected_file = case.get("expected_file")
+        ok = (top is None) if expected_file is None else bool(top and top.startswith(expected_file + "#"))
         passed += int(ok)
         results.append({
             "id": case["id"],
