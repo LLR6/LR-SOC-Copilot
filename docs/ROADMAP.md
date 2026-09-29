@@ -1,21 +1,31 @@
 # Roadmap
 
-## Near term
+## Current foundation
 
-- Add more labeled retrieval queries and negative cases.
-- Add case split/merge benchmark fixtures.
-- Export graph-friendly correlation edges.
-- Add investigation outcome labels.
+- Entity/time alert correlation
+- Correlation edges with source refs and time deltas
+- Evidence coverage
+- Local Markdown runbook retrieval
+- Five investigation runbooks
+- Labeled Top-1 retrieval benchmark
 
-## Medium term
+## Next
 
-- Time-decayed correlation.
-- ATT&CK technique mapping with explicit evidence links.
-- Local summary generation constrained to Evidence IDs.
-- Analyst feedback loops for runbook retrieval.
+- case split / merge benchmark;
+- retrieval Top-k / MRR metrics;
+- investigation outcome field;
+- explicit benign-hypothesis section;
+- runbook version metadata.
 
-## Research questions
+## Later
 
-- Does explicit correlation rationale improve analyst trust and speed?
-- Which evidence fields best predict whether two alerts belong to one activity?
-- How should retrieval quality be evaluated when multiple runbooks are acceptable?
+- ATT&CK mapping with evidence references;
+- local-only summarization with mandatory Evidence IDs;
+- analyst feedback loop;
+- time-decay correlation.
+
+## Non-goals
+
+- replacing analyst verification;
+- presenting triage score as compromise probability;
+- remote retrieval by default.
