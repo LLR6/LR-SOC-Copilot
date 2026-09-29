@@ -85,6 +85,21 @@ soc-copilot examples/alerts.jsonl \
 
 <!-- LR-CONTENT-UPGRADE:END -->
 
+<!-- LR-DEEP-CONTENT:START -->
+### Explainable correlation + retrieval benchmark
+
+Case 现在会保留 `correlation_edges`，每条边记录：
+
+- 左右两条源证据；
+- 共享实体；
+- 时间差（秒）。
+
+因此“为什么这三条告警被归到一个 Case”可以直接从产物回查，而不是只能相信聚合器。
+
+仓库还新增 `benchmarks/retrieval.json`，用固定查询检查 5 类本地 Runbook 的 Top-1 检索结果。CI 会运行检索 benchmark 并保存 JSON artifact，避免新增文档后把已有检索行为悄悄冲乱。
+<!-- LR-DEEP-CONTENT:END -->
+
+
 <!-- LR-LAB-FOOTER:START -->
 ---
 <p align="center"><sub>Part of <a href="https://github.com/LLR6">LR Lab</a> · Security × AI × Android × Automation</sub><br><sub>Build things that are useful, inspectable, and reproducible.</sub></p>
