@@ -1,0 +1,30 @@
+{
+  "schema": "lr-soc-copilot-retrieval-benchmark/v1",
+  "cases": [
+    {
+      "id": "account",
+      "query": "account compromise repeated login failure successful login",
+      "expected_file": "account-compromise.md"
+    },
+    {
+      "id": "process",
+      "query": "rare child process suspicious shell process triage",
+      "expected_file": "process-triage.md"
+    },
+    {
+      "id": "beacon",
+      "query": "periodic outbound low jitter connection beacon triage",
+      "expected_file": "beacon-triage.md"
+    },
+    {
+      "id": "dns",
+      "query": "dns anomaly high entropy long label unique subdomain",
+      "expected_file": "dns-anomaly.md"
+    },
+    {
+      "id": "scan",
+      "query": "network scan many destination ports fan-out approved scanner",
+      "expected_file": "network-scan.md"
+    }
+  ]
+}
