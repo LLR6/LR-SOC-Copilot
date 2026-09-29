@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LR-SOC-Copilot case report",
+  "type": "object",
+  "required": [
+    "schema",
+    "cases"
+  ],
+  "properties": {
+    "schema": {
+      "const": "lr-soc-copilot/v1"
+    },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "score",
+          "start",
+          "end",
+          "entities",
+          "correlation_edges",
+          "evidence",
+          "evidence_coverage",
+          "runbooks"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^CASE-[0-9]{3}$"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "start": {
+            "type": "string"
+          },
+          "end": {
+            "type": "string"
+          },
+          "entities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "correlation_edges": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "left",
+                "right",
+                "shared_entities",
+                "delta_seconds"
+              ]
+            }
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "source",
+                "timestamp",
+                "rule",
+                "severity",
+                "entities"
+              ]
+            }
+          },
+          "evidence_coverage": {
+            "type": "object",
+            "required": [
+              "complete",
+              "total",
+              "ratio"
+            ]
+          },
+          "runbooks": {
+            "type": "array"
+          }
+        }
+      }
+    }
+  }
+}
