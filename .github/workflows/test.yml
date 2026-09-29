@@ -41,6 +41,13 @@ jobs:
         run: python scripts/evaluate_retrieval.py benchmarks/retrieval.json --output retrieval-benchmark.json --fail-on-regression
       - name: Hash retrieval benchmark
         run: sha256sum retrieval-benchmark.json > retrieval-benchmark.json.sha256
+      - name: Smoke-test built wheel
+        shell: bash
+        run: |
+          python -m venv /tmp/lr-wheel-smoke
+          /tmp/lr-wheel-smoke/bin/python -m pip install --upgrade pip
+          /tmp/lr-wheel-smoke/bin/python -m pip install dist/*.whl
+          /tmp/lr-wheel-smoke/bin/soc-copilot --version
       - uses: actions/upload-artifact@v4
         if: always()
         with:
