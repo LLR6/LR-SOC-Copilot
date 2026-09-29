@@ -10,6 +10,7 @@
   <img alt="Last commit" src="https://img.shields.io/github/last-commit/LLR6/LR-SOC-Copilot?style=flat-square"> <img alt="Maintained" src="https://img.shields.io/badge/status-active-success?style=flat-square"></p>
 <p align="center"><a href="https://github.com/LLR6">Profile</a> · <a href="https://github.com/LLR6?tab=repositories">All projects</a> · <a href="https://github.com/LLR6/LR-SOC-Copilot/issues">Issues</a></p>
 <!-- LR-LAB-CHROME:END -->
+<p align="center">[Threat model](docs/THREAT_MODEL.md)</p>
 
 <!-- LR-SECOND-PASS:START -->
 <p align="center"><a href="#5-分钟-demo">5-minute demo</a> · <a href="./runbooks">Runbooks</a> · <a href="./docs/EVIDENCE_MODEL.md">Evidence model</a> · <a href="./src">Source</a> · <a href="./tests">Tests</a></p>
