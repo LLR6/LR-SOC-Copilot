@@ -6,6 +6,8 @@ SAMPLE=Path(__file__).parents[1]/"examples/alerts.jsonl"
 class CopilotTests(unittest.TestCase):
  def test_shared_entities_form_one_case(self):
   cases=correlate(load_alerts(SAMPLE));self.assertEqual(len(cases),2);self.assertEqual(len(cases[0]["alerts"]),3)
+  self.assertGreaterEqual(len(cases[0]["correlation_edges"]),2)
+  self.assertTrue(any("user:admin" in e["shared_entities"] for e in cases[0]["correlation_edges"]))
  def test_evidence_keeps_source_lines(self):self.assertEqual(load_alerts(SAMPLE)[0]["_ref"],"alerts.jsonl:L1")
  def test_retrieval_is_grounded(self):
   docs=[{"ref":"a","text":"login failure account compromise"},{"ref":"b","text":"dns resolver"}]
@@ -16,6 +18,13 @@ class CopilotTests(unittest.TestCase):
    {"source":"a:L2","timestamp":"2026-09-29T00:01:00Z","rule":"R2","entities":[]},
   ]
   self.assertEqual(evidence_coverage(evidence),{"complete":1,"total":2,"ratio":0.5})
+ def test_correlation_edges_keep_source_refs_and_time_delta(self):
+  case=correlate(load_alerts(SAMPLE))[0]
+  edge=case["correlation_edges"][0]
+  self.assertIn("alerts.jsonl:L",edge["left"])
+  self.assertIn("alerts.jsonl:L",edge["right"])
+  self.assertGreaterEqual(edge["delta_seconds"],0)
+
  def test_serialize_case_limits_runbooks(self):
   case=correlate(load_alerts(SAMPLE))[0]
   docs=[
