@@ -25,6 +25,11 @@
       "id": "scan",
       "query": "network scan many destination ports fan-out approved scanner",
       "expected_file": "network-scan.md"
+    },
+    {
+      "id": "negative-unrelated",
+      "query": "astronomy recipe watercolor bicycle",
+      "expected_file": null
     }
   ]
 }
