@@ -39,7 +39,14 @@ def correlate(alerts,window=900):
  cases=[]
  for num,items in enumerate(sorted(groups.values(),key=lambda g:g[0]["_time"]),1):
   score=min(100,sum(SEV.get(x["severity"],2) for x in items)*5+len({x.get('rule','') for x in items})*3)
-  cases.append({"id":f"CASE-{num:03d}","score":score,"start":items[0]["_time"].isoformat().replace("+00:00","Z"),"end":items[-1]["_time"].isoformat().replace("+00:00","Z"),"entities":sorted(set(y for x in items for y in x["entities"])),"alerts":items})
+  links=[]
+  for i,left in enumerate(items):
+   for right in items[i+1:]:
+    shared=sorted(set(left["entities"]) & set(right["entities"]))
+    delta=int((right["_time"]-left["_time"]).total_seconds())
+    if shared and 0<=delta<=window:
+     links.append({"left":left["_ref"],"right":right["_ref"],"shared_entities":shared,"delta_seconds":delta})
+  cases.append({"id":f"CASE-{num:03d}","score":score,"start":items[0]["_time"].isoformat().replace("+00:00","Z"),"end":items[-1]["_time"].isoformat().replace("+00:00","Z"),"entities":sorted(set(y for x in items for y in x["entities"])),"correlation_edges":links,"alerts":items})
  return sorted(cases,key=lambda x:(-x["score"],x["start"]))
 
 def chunks(folder):
@@ -75,7 +82,10 @@ def markdown(cases):
   rows += [f"## {c['id']} · score {c['score']}","",f"时间：`{c['start']}` → `{c['end']}`",f"实体：{', '.join(f'`{x}`' for x in c['entities'])}","","### Evidence",""]
   for e in c["evidence"]:rows.append(f"- **[{e['id']}]** `{e['timestamp']}` · {e['severity'].upper()} · {e['rule']} · {e['summary']} (`{e['source']}`)")
   coverage=c.get("evidence_coverage",{})
-  rows += ["",f"Evidence coverage: **{coverage.get('complete',0)}/{coverage.get('total',0)}** ({coverage.get('ratio',0):.0%})","","### Suggested runbooks",""]
+  rows += ["",f"Evidence coverage: **{coverage.get('complete',0)}/{coverage.get('total',0)}** ({coverage.get('ratio',0):.0%})","","### Correlation rationale",""]
+  edges=c.get("correlation_edges",[])
+  rows += [f"- {x['left']} ↔ {x['right']} · shared {', '.join(x['shared_entities'])} · Δ {x['delta_seconds']}s" for x in edges] or ["- Single-alert case; no correlation edge."]
+  rows += ["","### Suggested runbooks",""]
   rows += [f"- `{x['ref']}` · similarity {x['score']} · {x['excerpt'].splitlines()[0]}" for x in c["runbooks"]] or ["- No matching local runbook."]
   rows += ["","### Investigator checklist","","- [ ] Validate the earliest evidence against the source system.","- [ ] Confirm whether the shared entities belong to one activity.","- [ ] Record benign explanations and contradictory evidence.",""]
  return "\n".join(rows)
