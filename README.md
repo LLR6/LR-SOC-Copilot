@@ -1,5 +1,17 @@
 # LR-SOC-Copilot
 
+<!-- LR-LAB-CHROME:START -->
+<p align="center">
+  <a href="https://github.com/LLR6"><img alt="LR Lab" src="https://img.shields.io/badge/LR_LAB-0x4C52-0D1117?style=for-the-badge&logo=github&logoColor=white"></a>
+  <img alt="SOC / IR" src="https://img.shields.io/badge/SOC_%2F_IR-6366F1?style=for-the-badge">
+</p>
+<p align="center"><strong>Every conclusion needs evidence.</strong><br><sub>Alert correlation and local runbook retrieval</sub></p>
+<p align="center"><a href="https://github.com/LLR6/LR-SOC-Copilot/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/LLR6/LR-SOC-Copilot?style=flat-square&logo=github&label=stars"></a>
+  <img alt="Last commit" src="https://img.shields.io/github/last-commit/LLR6/LR-SOC-Copilot?style=flat-square"> <img alt="Maintained" src="https://img.shields.io/badge/status-active-success?style=flat-square"></p>
+<p align="center"><a href="https://github.com/LLR6">Profile</a> · <a href="https://github.com/LLR6?tab=repositories">All projects</a> · <a href="https://github.com/LLR6/LR-SOC-Copilot/issues">Issues</a></p>
+<!-- LR-LAB-CHROME:END -->
+
+
 <p align="center"><img src="./docs/media/social-preview.svg" alt="LR-SOC-Copilot" width="100%"></p>
 <p align="center"><img src="./docs/media/demo.gif" alt="LR-SOC-Copilot reproducible demo" width="100%"></p>
 <p align="center"><strong>Every conclusion needs evidence.</strong></p>
@@ -39,3 +51,9 @@ soc-copilot examples/alerts.jsonl --runbooks runbooks --format json --output cas
 加入 ATT&CK 映射、时间衰减、图特征、可选本地 LLM 摘要、引用完整性校验和调查反馈学习。
 
 作者：LLR6 · MIT License
+
+<!-- LR-LAB-FOOTER:START -->
+---
+<p align="center"><sub>Part of <a href="https://github.com/LLR6">LR Lab</a> · Security × AI × Android × Automation</sub><br><sub>Build things that are useful, inspectable, and reproducible.</sub></p>
+<!-- LR-LAB-FOOTER:END -->
+
