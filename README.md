@@ -10,6 +10,11 @@
   <img alt="Last commit" src="https://img.shields.io/github/last-commit/LLR6/LR-SOC-Copilot?style=flat-square"> <img alt="Maintained" src="https://img.shields.io/badge/status-active-success?style=flat-square"></p>
 <p align="center"><a href="https://github.com/LLR6">Profile</a> · <a href="https://github.com/LLR6?tab=repositories">All projects</a> · <a href="https://github.com/LLR6/LR-SOC-Copilot/issues">Issues</a></p>
 <!-- LR-LAB-CHROME:END -->
+
+<!-- LR-PROJECT-DOCS:START -->
+### Project docs
+[Architecture](./docs/ARCHITECTURE.md) · [Benchmarks](./docs/BENCHMARKS.md) · [Evidence model](./docs/EVIDENCE_MODEL.md) · [Threat model](./docs/THREAT_MODEL.md) · [Roadmap](./docs/ROADMAP.md) · [Releasing](./docs/RELEASING.md)
+<!-- LR-PROJECT-DOCS:END -->
 <p align="center">[Threat model](docs/THREAT_MODEL.md)</p>
 
 <!-- LR-SECOND-PASS:START -->
