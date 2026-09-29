@@ -1,12 +1,23 @@
 [build-system]
-requires=["setuptools>=68"]
-build-backend="setuptools.build_meta"
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
 [project]
-name="lr-soc-copilot"
-version="0.1.0"
-description="Evidence-grounded alert correlation and local runbook retrieval for SOC investigation"
-requires-python=">=3.10"
+name = "lr-soc-copilot"
+version = "0.1.0"
+description = "Evidence-grounded alert correlation and local runbook retrieval for SOC investigation"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{name = "LLR6"}]
+keywords = ["security", "soc", "incident-response", "alert-correlation", "runbook"]
+
 [project.scripts]
-soc-copilot="soc_copilot.cli:main"
+soc-copilot = "soc_copilot.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/LLR6/LR-SOC-Copilot"
+Repository = "https://github.com/LLR6/LR-SOC-Copilot"
+Issues = "https://github.com/LLR6/LR-SOC-Copilot/issues"
+
 [tool.setuptools.packages.find]
-where=["src"]
+where = ["src"]
