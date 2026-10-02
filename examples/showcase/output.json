@@ -1,0 +1,142 @@
+{
+  "schema": "lr-soc-copilot/v1",
+  "cases": [
+    {
+      "id": "CASE-001",
+      "score": 99,
+      "start": "2026-09-27T01:14:03Z",
+      "end": "2026-09-27T01:19:08Z",
+      "entities": [
+        "host:web-01",
+        "ip:203.0.113.8",
+        "process:web-service",
+        "user:admin"
+      ],
+      "correlation_edges": [
+        {
+          "left": "alerts.jsonl:L1",
+          "right": "alerts.jsonl:L2",
+          "shared_entities": [
+            "ip:203.0.113.8",
+            "user:admin"
+          ],
+          "delta_seconds": 161
+        },
+        {
+          "left": "alerts.jsonl:L2",
+          "right": "alerts.jsonl:L3",
+          "shared_entities": [
+            "host:web-01"
+          ],
+          "delta_seconds": 144
+        }
+      ],
+      "evidence": [
+        {
+          "id": "E1",
+          "source": "alerts.jsonl:L1",
+          "timestamp": "2026-09-27T01:14:03Z",
+          "rule": "Repeated Login Failure",
+          "severity": "medium",
+          "summary": "12 failed logins for admin",
+          "entities": [
+            "ip:203.0.113.8",
+            "user:admin"
+          ]
+        },
+        {
+          "id": "E2",
+          "source": "alerts.jsonl:L2",
+          "timestamp": "2026-09-27T01:16:44Z",
+          "rule": "Successful Login After Failures",
+          "severity": "high",
+          "summary": "admin authenticated from the same source",
+          "entities": [
+            "host:web-01",
+            "ip:203.0.113.8",
+            "user:admin"
+          ]
+        },
+        {
+          "id": "E3",
+          "source": "alerts.jsonl:L3",
+          "timestamp": "2026-09-27T01:19:08Z",
+          "rule": "Rare Child Process",
+          "severity": "high",
+          "summary": "web service started an unusual shell child",
+          "entities": [
+            "host:web-01",
+            "process:web-service"
+          ]
+        }
+      ],
+      "evidence_coverage": {
+        "complete": 3,
+        "total": 3,
+        "ratio": 1.0
+      },
+      "runbooks": [
+        {
+          "ref": "process-triage.md#chunk-2",
+          "score": 0.2154,
+          "excerpt": "## Validate\nReview parent and child process lineage, command line, user context, executable hash and nearby authentication events on the same host."
+        },
+        {
+          "ref": "beacon-triage.md#chunk-2",
+          "score": 0.1743,
+          "excerpt": "## Questions to answer\n\n1. Which host and process own the connections?\n2. Is the destination expected for that host role?\n3. Is the interval stable across a long enough window?\n4. Does the pattern persist outside business hours?\n5. Is the destination shared by many healthy hosts?\n6. Does DNS/TLS/process evidence support or contradict the alert?"
+        },
+        {
+          "ref": "process-triage.md#chunk-1",
+          "score": 0.1667,
+          "excerpt": "# Suspicious process triage"
+        }
+      ]
+    },
+    {
+      "id": "CASE-002",
+      "score": 13,
+      "start": "2026-09-27T03:22:00Z",
+      "end": "2026-09-27T03:22:00Z",
+      "entities": [
+        "host:dns-02"
+      ],
+      "correlation_edges": [],
+      "evidence": [
+        {
+          "id": "E1",
+          "source": "alerts.jsonl:L4",
+          "timestamp": "2026-09-27T03:22:00Z",
+          "rule": "DNS Volume Spike",
+          "severity": "low",
+          "summary": "resolver traffic exceeded daily baseline",
+          "entities": [
+            "host:dns-02"
+          ]
+        }
+      ],
+      "evidence_coverage": {
+        "complete": 1,
+        "total": 1,
+        "ratio": 1.0
+      },
+      "runbooks": [
+        {
+          "ref": "dns-anomaly.md#chunk-1",
+          "score": 0.2425,
+          "excerpt": "# DNS Anomaly Triage\n\nUse for long labels, high-entropy subdomains, unusual query volume or other DNS signals."
+        },
+        {
+          "ref": "dns-anomaly.md#chunk-4",
+          "score": 0.0755,
+          "excerpt": "## Investigation sequence\n\n1. Confirm the raw query in the source telemetry.\n2. Split registered domain from generated subdomain labels.\n3. Check whether many hosts show the same pattern.\n4. Compare volume, uniqueness and timing.\n5. Correlate with process, network and authentication alerts.\n6. Search local allowlists and service-owner documentation.\n7. Record benign explanations and unresolved questions.\n\nDNS heurist"
+        },
+        {
+          "ref": "beacon-triage.md#chunk-4",
+          "score": 0.0563,
+          "excerpt": "## Benign explanations\n\nPeriodic traffic can come from:\n\n- monitoring agents;\n- software update checks;\n- backup clients;\n- NTP-like scheduled services;\n- cloud health checks;\n- enterprise management software.\n\nA periodic connection is not, by itself, proof of command-and-control."
+        }
+      ]
+    }
+  ]
+}

@@ -1,34 +1,22 @@
 # LR-SOC-Copilot
 
-<!-- LR-LAB-CHROME:START -->
-<p align="center">
-  <a href="https://github.com/LLR6"><img alt="LR Lab" src="https://img.shields.io/badge/LR_LAB-0x4C52-0D1117?style=for-the-badge&logo=github&logoColor=white"></a>
-  <img alt="SOC / IR" src="https://img.shields.io/badge/SOC_%2F_IR-6366F1?style=for-the-badge">
-</p>
-<p align="center"><strong>Every conclusion needs evidence.</strong><br><sub>Alert correlation and local runbook retrieval</sub></p>
-<p align="center"><a href="https://github.com/LLR6/LR-SOC-Copilot/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/LLR6/LR-SOC-Copilot?style=flat-square&logo=github&label=stars"></a>
-  <img alt="Last commit" src="https://img.shields.io/github/last-commit/LLR6/LR-SOC-Copilot?style=flat-square"> <img alt="Maintained" src="https://img.shields.io/badge/status-active-success?style=flat-square"></p>
-<p align="center"><a href="https://github.com/LLR6">Profile</a> · <a href="https://github.com/LLR6?tab=repositories">All projects</a> · <a href="https://github.com/LLR6/LR-SOC-Copilot/issues">Issues</a></p>
-<!-- LR-LAB-CHROME:END -->
+### 四条告警，哪些是一件事？把关联理由展开看。
 
-<!-- LR-PROJECT-DOCS:START -->
-### Project docs
-[Architecture](./docs/ARCHITECTURE.md) · [Benchmarks](./docs/BENCHMARKS.md) · [Evidence model](./docs/EVIDENCE_MODEL.md) · [Threat model](./docs/THREAT_MODEL.md) · [Roadmap](./docs/ROADMAP.md) · [Compatibility](./docs/COMPATIBILITY.md) · [Releasing](./docs/RELEASING.md) · [Support](./SUPPORT.md)
- · [Change risk](./docs/CHANGE_RISK.md) · [Failure modes](./docs/FAILURE_MODES.md) · [Performance](./docs/PERFORMANCE.md)
-<!-- LR-PROJECT-DOCS:END -->
-<p align="center">[Threat model](docs/THREAT_MODEL.md)</p>
+按实体和时间关联 JSONL 告警，检索本地 Runbook，生成可回到源行核对的调查摘要。适合离线分诊、关联逻辑实验和调查材料整理；当前检索使用词频余弦相似度。
 
-<!-- LR-SECOND-PASS:START -->
-<p align="center"><a href="#5-分钟-demo">5-minute demo</a> · <a href="./runbooks">Runbooks</a> · <a href="./docs/EVIDENCE_MODEL.md">Evidence model</a> · <a href="./src">Source</a> · <a href="./tests">Tests</a></p>
-<!-- LR-SECOND-PASS:END -->
+[快速体验](#5-分钟-demo) · [实跑案例](docs/DEMO.md) · [完整输出](examples/showcase/output.json) · [反馈问题](https://github.com/LLR6/LR-SOC-Copilot/issues)
 
-
+| 你的场景 | 可以先试什么 |
+| --- | --- |
+| 登录失败、成功登录和进程告警分散 | 查看共享实体、时间差与案件关联边 |
+| 想知道摘要有没有原始依据 | 核对文件行号和 evidence_coverage |
+| 有本地处置文档，查找不方便 | 返回相关 Runbook 片段与相似度 |
 
 <p align="center"><img src="./docs/media/social-preview.svg" alt="LR-SOC-Copilot" width="100%"></p>
 <p align="center"><img src="./docs/media/demo.gif" alt="LR-SOC-Copilot reproducible demo" width="100%"></p>
 <p align="center"><strong>Every conclusion needs evidence.</strong></p>
 <p align="center">Alert correlation and local runbook retrieval for investigation.</p>
-<p align="center"><img alt="Test" src="https://github.com/LLR6/LR-SOC-Copilot/actions/workflows/test.yml/badge.svg"> <img alt="Python 3.10+" src="https://img.shields.io/badge/python-3.10%2B-blue"> <img alt="MIT" src="https://img.shields.io/badge/license-MIT-green"> <img alt="Version" src="https://img.shields.io/badge/version-0.1.0-8b5cf6"></p>
+<p align="center"><img alt="Test" src="https://github.com/LLR6/LR-SOC-Copilot/actions/workflows/test.yml/badge.svg"> <img alt="Python 3.10+" src="https://img.shields.io/badge/python-3.10%2B-blue"> <img alt="MIT" src="https://img.shields.io/badge/license-MIT-green"> </p>
 
 ## 30 秒看懂
 
@@ -57,6 +45,13 @@ soc-copilot examples/alerts.jsonl --runbooks runbooks --format json --output cas
 ## 边界
 
 它不自动定性入侵，不替代分析员确认，也不会根据分数直接执行封禁。关联规则可能把同一共享实体上的无关活动连在一起，因此报告明确要求检查反证。
+
+
+## 实跑结果与使用案例
+
+本次 **4 条示例告警生成 2 个案件**：前三条进入 CASE-001，L1↔L2 共享账号/IP（161 秒），L2↔L3 共享主机（144 秒）；L4 的 DNS 告警独立。CASE-001 的证据完整性为 3/3；这不表示入侵概率为 100%。
+
+[查看运行过程与读结果的方法](docs/DEMO.md) · [查看未经改写的 JSON 输出](examples/showcase/output.json)
 
 ## 研究路线
 
@@ -106,16 +101,12 @@ Case 现在会保留 `correlation_edges`，每条边记录：
 仓库还新增 `benchmarks/retrieval.json`，用固定查询检查 5 类本地 Runbook 的 Top-1 检索结果。CI 会运行检索 benchmark 并保存 JSON artifact，避免新增文档后把已有检索行为悄悄冲乱。
 <!-- LR-DEEP-CONTENT:END -->
 
-<!-- LR-ENGINEERING-REF:START -->
-## Engineering Reference
+<details>
+<summary>工程文档与兼容性</summary>
 
-[Architecture](docs/ARCHITECTURE.md) · [Evidence model](docs/EVIDENCE_MODEL.md) · [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md) · [Release checklist](docs/RELEASE_CHECKLIST.md) · [Case schema](schemas/case-report.schema.json)
+[Architecture](./docs/ARCHITECTURE.md) · [Benchmarks](./docs/BENCHMARKS.md) · [Evidence model](./docs/EVIDENCE_MODEL.md) · [Threat model](./docs/THREAT_MODEL.md) · [Roadmap](./docs/ROADMAP.md) · [Compatibility](./docs/COMPATIBILITY.md) · [Releasing](./docs/RELEASING.md) · [Support](./SUPPORT.md)
+ · [Change risk](./docs/CHANGE_RISK.md) · [Failure modes](./docs/FAILURE_MODES.md) · [Performance](./docs/PERFORMANCE.md)
 
-These files document the project's architecture, safety boundaries, reproducibility assumptions and release process.
-<!-- LR-ENGINEERING-REF:END -->
+[贡献说明](CONTRIBUTING.md) · [版本记录](CHANGELOG.md) · [输出格式](schemas)
 
-<!-- LR-LAB-FOOTER:START -->
----
-<p align="center"><sub>Part of <a href="https://github.com/LLR6">LR Lab</a> · Security × AI × Android × Automation</sub><br><sub>Build things that are useful, inspectable, and reproducible.</sub></p>
-<!-- LR-LAB-FOOTER:END -->
-
+</details>
